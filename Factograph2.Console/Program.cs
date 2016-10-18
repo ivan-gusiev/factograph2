@@ -10,6 +10,7 @@ namespace Factograph2.Console
     {
         static void Main(string[] args)
         {
+            
         }
     }
 }
