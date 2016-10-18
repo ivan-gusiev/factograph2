@@ -49,7 +49,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Factograph2.Core\Factograph2.Core.fsproj">
+      <Project>{1a7b9eb1-1e38-4e45-9a6f-5586dab13d09}</Project>
+      <Name>Factograph2.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
