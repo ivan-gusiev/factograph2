@@ -31,13 +31,28 @@ type Variant =
     | Float   of f : double
     | Object  of o : obj
 
-    static member ToVariant (o : obj) = 
+    static member New (i : int)    = Variant.Integer(i)
+    static member New (s : string) = Variant.String(s)
+    static member New (b : bool)   = Variant.Bool(b)
+    static member New (f : double) = Variant.Float(f)
+
+    static member New (o : obj) = 
         match o with
             | :? int    as i -> Variant.Integer i
             | :? string as s -> Variant.String s
             | :? bool   as b -> Variant.Bool b
             | :? float  as f -> Variant.Float f
             | _ -> Variant.Object o
+
+    member self.Value : obj =
+        match self with
+            | Integer(i) -> i :> obj
+            | String(s) -> s :> obj
+            | Bool(b) -> b :> obj
+            | Float(f) -> f :> obj
+            | Object(o) -> o
+
+    override self.ToString() = self.Value.ToString()
 
 (*
     TERMS
@@ -54,8 +69,29 @@ type Term =
     | Variable of name : VarId
     | Complex  of Term list
 
+    static member New (i : int)    = Term.Constant(Variant.Integer(i))
+    static member New (s : string) = Term.Constant(Variant.String(s))
+    static member New (b : bool)   = Term.Constant(Variant.Bool(b))
+    static member New (f : double) = Term.Constant(Variant.Float(f))
+
+    static member New (c : Variant)   = Term.Constant(c)
+    static member New (t : Term seq) = Term.Complex(Seq.toList t)
+
     member self.IsPredicate = 
         match self with
             | Complex (Atom _ :: _) -> true
             | _ -> false
-        
+    
+    member self.Contains other =
+        match self with
+            | x when x = other -> true
+            | Term.Complex(xs) -> 
+                List.exists (fun (x: Term) -> x.Contains(other)) xs
+            | _ -> false
+
+    override self.ToString() =
+        match self with
+            | Atom(id)
+            | Variable(id) -> id
+            | Constant(c) -> c.ToString()
+            | Complex(ts) -> "(" + System.String.Join(", ", ts) + ")"

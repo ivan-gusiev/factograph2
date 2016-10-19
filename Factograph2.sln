@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Factograph2.Console", "Fact
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Factograph2.Core", "Factograph2.Core\Factograph2.Core.fsproj", "{1A7B9EB1-1E38-4E45-9A6F-5586DAB13D09}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Factograph2.UnitTests", "Factograph2.UnitTests\Factograph2.UnitTests.csproj", "{FB69C2C7-3CCC-4540-B97E-494462655ECC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{1A7B9EB1-1E38-4E45-9A6F-5586DAB13D09}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A7B9EB1-1E38-4E45-9A6F-5586DAB13D09}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A7B9EB1-1E38-4E45-9A6F-5586DAB13D09}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB69C2C7-3CCC-4540-B97E-494462655ECC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB69C2C7-3CCC-4540-B97E-494462655ECC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB69C2C7-3CCC-4540-B97E-494462655ECC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB69C2C7-3CCC-4540-B97E-494462655ECC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
