@@ -13,14 +13,14 @@ namespace Factograph2.UnitTests
     public class UnificationTests
     {
         #region Helpers
-        private static TestCaseData TryUnify(Term lhs, Term rhs, string caseName)
+        private static TestCaseData TestUnify(Term lhs, Term rhs, string caseName)
         {
             return new TestCaseData(lhs, rhs) { TestName = "Unify: " + caseName };
         }
 
-        private static TestCaseData TryUnify(Term lhs, Term rhs)
+        private static TestCaseData TestUnify(Term lhs, Term rhs)
         {
-            return TryUnify(lhs, rhs, $"{lhs} vs {rhs}");
+            return TestUnify(lhs, rhs, $"{lhs} vs {rhs}");
         }
 
         private static Term C(params Term[] terms)
@@ -39,33 +39,35 @@ namespace Factograph2.UnitTests
             var y = Term.NewVariable("Y");
 
             // atoms
-            yield return TryUnify(bob, bob, "same atom reference");
-            yield return TryUnify(bob, Term.NewAtom("bob"), "same atom ids");
+            yield return TestUnify(bob, bob, "same atom reference");
+            yield return TestUnify(bob, Term.NewAtom("bob"), "same atom ids");
 
             // consts
-            yield return TryUnify(Term.New(1), Term.New(1));
-            yield return TryUnify(Term.New("a"), Term.New("a"));
-            yield return TryUnify(Term.New((string) null), Term.New((string) null), "null strings");
-            yield return TryUnify(Term.New(false), Term.New(false));
-            yield return TryUnify(Term.New(true), Term.New(true));
-            yield return TryUnify(Term.New(Math.PI), Term.New(Math.PI), "PI vs PI");
-            yield return TryUnify(Term.New(Variant.New(new Version("1.2.3.4"))), Term.New(Variant.New(new Version("1.2.3.4"))));
+            yield return TestUnify(Term.New(1), Term.New(1));
+            yield return TestUnify(Term.New("a"), Term.New("a"));
+            yield return TestUnify(Term.New((string) null), Term.New((string) null), "null strings");
+            yield return TestUnify(Term.New(false), Term.New(false));
+            yield return TestUnify(Term.New(true), Term.New(true));
+            yield return TestUnify(Term.New(Math.PI), Term.New(Math.PI), "PI vs PI");
+            yield return TestUnify(Term.New(Variant.New(new Version("1.2.3.4"))), Term.New(Variant.New(new Version("1.2.3.4"))));
 
             // variables
-            yield return TryUnify(x, sue);
-            yield return TryUnify(Term.New(1), x);
-            yield return TryUnify(Term.New(1.1), x);
-            yield return TryUnify(x, Term.New(true));
-            yield return TryUnify(x, Term.New("string"));
-            yield return TryUnify(x, Term.New(Variant.New(new Version("1.2.3.4"))));
-            yield return TryUnify(x, y);
+            yield return TestUnify(x, sue);
+            yield return TestUnify(Term.New(1), x);
+            yield return TestUnify(Term.New(1.1), x);
+            yield return TestUnify(x, Term.New(true));
+            yield return TestUnify(x, Term.New("string"));
+            yield return TestUnify(x, Term.New(Variant.New(new Version("1.2.3.4"))));
+            yield return TestUnify(x, y);
 
             // complex terms
-            yield return TryUnify(C(f, bob, sue), C(f, bob, sue));
-            yield return TryUnify(C(f, bob, sue), C(f, x, sue));
-            yield return TryUnify(C(f, x), C(f, y));
-            yield return TryUnify(C(f, C(g, x)), C(f, y));
-            yield return TryUnify(C(f, C(g, x), x), C(f, y, Term.NewAtom("a")));
+            yield return TestUnify(x, C(f, bob, sue));
+            yield return TestUnify(C(f, bob, sue), C(f, bob, sue));
+            yield return TestUnify(C(f, bob, sue), C(f, x, sue));
+            yield return TestUnify(C(f, x), C(f, y));
+            yield return TestUnify(C(f, C(g, x)), C(f, y));
+            yield return TestUnify(C(f, C(g, x), x), C(f, y, Term.NewAtom("a")));
+            yield return TestUnify(C(f, C(g, C(x, y)), x), C(f, y, Term.NewAtom("a")));
         }
 
         public static IEnumerable<TestCaseData> NegativeUnificationTestCases()
@@ -78,22 +80,22 @@ namespace Factograph2.UnitTests
             var y = Term.NewVariable("Y");
 
             // atoms
-            yield return TryUnify(bob, sue, "different atom ids");
+            yield return TestUnify(bob, sue, "different atom ids");
 
             // constants
-            yield return TryUnify(Term.New(1), Term.New(2));
-            yield return TryUnify(Term.New("a"), Term.New(""));
-            yield return TryUnify(Term.New(string.Empty), Term.New((string)null), "empty vs null strings");
-            yield return TryUnify(Term.New(false), Term.New(true));
-            yield return TryUnify(Term.New(Math.PI), Term.New(Math.E), "PI vs E");
-            yield return TryUnify(Term.New(Variant.New(new Version("1.2.3.4"))), Term.New(Variant.New(new Version("1.2.3.5"))));
+            yield return TestUnify(Term.New(1), Term.New(2));
+            yield return TestUnify(Term.New("a"), Term.New(""));
+            yield return TestUnify(Term.New(string.Empty), Term.New((string)null), "empty vs null strings");
+            yield return TestUnify(Term.New(false), Term.New(true));
+            yield return TestUnify(Term.New(Math.PI), Term.New(Math.E), "PI vs E");
+            yield return TestUnify(Term.New(Variant.New(new Version("1.2.3.4"))), Term.New(Variant.New(new Version("1.2.3.5"))));
 
-            yield return TryUnify(bob, Term.New("bob"), "atom vs string");
+            yield return TestUnify(bob, Term.New("bob"), "atom vs string");
 
             // complex terms
-            yield return TryUnify(C( f, bob, sue ), C( f, bob ));
-            yield return TryUnify(C( f, x ), C( g, y ));
-            yield return TryUnify(C( f, x ), C( f, x, y ));
+            yield return TestUnify(C( f, bob, sue ), C( f, bob ));
+            yield return TestUnify(C( f, x ), C( g, y ));
+            yield return TestUnify(C( f, x ), C( f, x, y ));
 
         }
 

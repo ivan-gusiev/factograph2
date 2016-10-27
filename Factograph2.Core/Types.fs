@@ -90,8 +90,11 @@ type Term =
             | _ -> false
 
     override self.ToString() =
+        let parens (xs : seq<'a>) = "(" + System.String.Join(", ", xs) + ")"
+
         match self with
             | Atom(id)
             | Variable(id) -> id
             | Constant(c) -> c.ToString()
-            | Complex(ts) -> "(" + System.String.Join(", ", ts) + ")"
+            | Complex(Atom(a) :: tail) -> a.ToString() + parens(tail)
+            | Complex(ts) -> parens(ts)
